@@ -34,9 +34,10 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080';
   // Enable CORS for frontend
   res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
 
@@ -135,16 +136,8 @@ export default async function handler(
           return res.status(400).json({ error: 'Settings object is required for update' })
         }
 
-        console.log('=== APP SETTINGS UPDATE DEBUG ===')
-        console.log('Admin User ID:', adminUserId)
-        console.log('Service role key available:', !!supabaseServiceKey)
-        console.log('Using adminClient (service role):', !!supabaseAdmin)
-        console.log('Settings to update:', settings)
-
         // Update all settings using the admin client to bypass RLS
         const updatePromises = Object.entries(settings).map(async ([key, value]) => {
-          console.log(`\nUpdating ${key} to:`, value)
-          
           // First, check if the setting exists
           const { data: existingData, error: checkError } = await adminClient
             .from('app_settings')
@@ -152,26 +145,16 @@ export default async function handler(
             .eq('setting_key', key)
             .single()
           
-          console.log(`Existing value for ${key}:`, existingData?.setting_value)
-          console.log(`Check error for ${key}:`, checkError?.message || 'none')
-          
           const updatePayload = { 
             setting_value: value,
             updated_at: new Date().toISOString(),
             updated_by: adminUserId
           }
-          console.log(`Update payload for ${key}:`, updatePayload)
-          
           const { data: updateData, error, count } = await adminClient
             .from('app_settings')
             .update(updatePayload)
             .eq('setting_key', key)
             .select()
-
-          console.log(`Update result for ${key}:`)
-          console.log('  - Data:', updateData)
-          console.log('  - Error:', error?.message || 'none')
-          console.log('  - Count:', count)
 
           if (error) {
             console.error(`Failed to update ${key}:`, error)
@@ -185,18 +168,10 @@ export default async function handler(
             .eq('setting_key', key)
             .single()
           
-          console.log(`Verification for ${key}:`)
-          console.log('  - New value in DB:', verifyData?.setting_value)
-          console.log('  - Expected value:', value)
-          console.log('  - Match:', verifyData?.setting_value === value)
-          
           return { key, success: verifyData?.setting_value === value }
         })
 
         const results = await Promise.all(updatePromises)
-        console.log('\n=== UPDATE RESULTS ===')
-        console.log('All updates:', results)
-        console.log('=== END DEBUG ===\n')
 
         return res.status(200).json({ success: true })
 

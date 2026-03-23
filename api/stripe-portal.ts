@@ -29,8 +29,9 @@ export default async function handler(
   res: VercelResponse
 ) {
   // Set CORS headers
+  const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080';
   res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
 

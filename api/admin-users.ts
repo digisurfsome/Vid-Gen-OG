@@ -5,10 +5,6 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-// Debug logging to see what env vars are available
-console.log('ENV check - Service key exists:', !!supabaseServiceKey)
-console.log('ENV check - Service key prefix:', supabaseServiceKey ? supabaseServiceKey.substring(0, 20) + '...' : 'not set')
-
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("Missing Supabase configuration. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.")
 }
@@ -41,9 +37,10 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080';
   // Enable CORS for frontend
   res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
 
@@ -78,8 +75,6 @@ export default async function handler(
 
     if (roleError) {
       console.error('Admin check error:', roleError)
-      console.error('Using service role?', !!supabaseAdmin)
-      console.error('Service key length:', supabaseServiceKey?.length)
       return res.status(403).json({ error: 'Admin access required - database error' })
     }
 

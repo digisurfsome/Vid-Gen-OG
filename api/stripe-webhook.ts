@@ -34,28 +34,18 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  console.log('[Webhook] Received request');
-  console.log('[Webhook] Headers:', req.headers);
-  
   const sig = req.headers['stripe-signature'] as string;
   const rawBody = await getRawBody(req);
-  
-  console.log('[Webhook] Raw body length:', rawBody.length);
-  console.log('[Webhook] Raw body preview:', rawBody.substring(0, 100));
 
   let event: Stripe.Event;
 
   // First, parse the event to determine if it's test mode
   const parsedBody = JSON.parse(rawBody);
   const isTestMode = parsedBody.livemode === false;
-  console.log('[Webhook] Test mode:', isTestMode);
-  
+
   // Get appropriate Stripe client and webhook secret
   const stripe = getStripeClient(isTestMode);
   const webhookSecret = getWebhookSecret(isTestMode);
-  
-  console.log('[Webhook] Webhook secret exists:', !!webhookSecret);
-  console.log('[Webhook] Stripe client initialized:', !!stripe);
 
   try {
     // Verify webhook signature

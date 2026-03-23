@@ -8,17 +8,11 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL!;
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-console.log('Environment check:', {
-  hasUrl: !!supabaseUrl,
-  hasAnonKey: !!supabaseAnonKey, 
-  hasServiceKey: !!supabaseServiceKey,
-  serviceKeyPrefix: supabaseServiceKey?.substring(0, 20),
-  isTestMode
-});
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080';
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 

@@ -6,8 +6,9 @@ import { getApiKeys, logApiKeyUsage } from '../src/lib/api-keys';
 import { rateLimiters, applyRateLimit } from './lib/rate-limiter.js';
 
 // Enable CORS for local development
+const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080';
 const cors = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': allowedOrigin,
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
