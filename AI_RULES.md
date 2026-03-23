@@ -19,3 +19,9 @@ Available packages and libraries:
 - You ALREADY have ALL the shadcn/ui components and their dependencies installed. So you don't need to install them again.
 - You have ALL the necessary Radix UI components installed.
 - Use prebuilt components from the shadcn/ui library after importing them. Note that these files shouldn't be edited, so make new components if you need to change them.
+
+## Changelog
+
+### 2026-03-23 — CORS Security Hardening (API Endpoints)
+
+Replaced all wildcard (`'*'`) CORS origins in 14 API endpoint files with `process.env.VITE_APP_URL || 'http://localhost:8080'`. Wildcard CORS on authenticated endpoints is a security risk — any malicious site could make cross-origin requests to our API. Now only our own application origin is permitted. See CLAUDE.md for full file list.

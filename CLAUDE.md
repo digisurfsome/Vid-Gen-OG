@@ -455,3 +455,23 @@ The Stripe admin management system includes comprehensive testing:
 - **E2E Tests**: Full flow including webhook processing and subscription activation
 - **Performance Tests**: Rate limiting, exponential backoff, and bulk operations
 - **Migration Script**: Safely migrates existing plans with metadata tagging
+
+## Changelog
+
+### 2026-03-23 — CORS Security Hardening (API Endpoints)
+
+**What**: Replaced all wildcard (`'*'`) and permissive (`req.headers.origin || '*'`) CORS `Access-Control-Allow-Origin` headers across all API endpoints with a controlled `allowedOrigin` variable set to `process.env.VITE_APP_URL || 'http://localhost:8080'`.
+
+**Why**: Wildcard CORS origins allow any website to make authenticated cross-origin requests to our API, which is a security vulnerability (OWASP A01:2021 - Broken Access Control). Since our API endpoints handle sensitive operations (admin actions, credit purchases, Stripe operations, email sending), restricting CORS to our own application origin prevents cross-site request forgery and data exfiltration from malicious third-party sites.
+
+**Files changed (14 API endpoints updated)**:
+- `api/credits.ts`, `api/generation-status.ts`, `api/admin-credit-packages.ts`, `api/stripe-admin.ts`
+- `api/test-email.ts`, `api/credit-purchase.ts`, `api/transactions.ts`, `api/stripe-checkout.ts`
+- `api/stripe-portal.ts`, `api/stripe-checkout-new-user.ts`, `api/generate-video.ts`
+- `api/validate-fal-key.ts`, `api/generations.ts`, `api/validate-fal-key-original.ts`
+
+**Already correct (no changes needed)**:
+- `api/admin-users.ts`, `api/app-settings.ts`, `api/send-email.ts` — already used `allowedOrigin`
+- `api/stripe-webhook.ts` — webhook endpoint, no CORS headers (correct)
+
+**Pattern**: Every API file now defines `const allowedOrigin = process.env.VITE_APP_URL || 'http://localhost:8080'` and uses it in all CORS response headers.
