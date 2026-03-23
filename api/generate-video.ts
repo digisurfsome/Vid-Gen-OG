@@ -299,23 +299,27 @@ async function generateVideoAsync(
       throw new Error('No video URL in response');
     }
 
-    // Deduct credits on successful generation (using database function for atomic operation)
-    const { data: creditTransaction, error: creditTransactionError } = await serviceClient
+    // Deduct 1 credit for successful video generation (with reference tracking)
+    const { data: deductResult, error: deductError } = await serviceClient
       .rpc('deduct_credits', {
         p_user_id: userId,
         p_amount: 1,
-        p_description: `Video generation: ${prompt.substring(0, 50)}...`
+        p_description: `Video generation: ${prompt.substring(0, 50)}...`,
+        p_reference_type: 'video_generation',
+        p_reference_id: generationId
       });
-    
+
     let creditTransactionId = null;
-    if (creditTransactionError) {
-      console.error('Failed to deduct credits:', creditTransactionError);
-      // Continue even if credit deduction fails - video was generated successfully
-    } else if (creditTransaction && creditTransaction.length > 0) {
-      creditTransactionId = creditTransaction[0].transaction_id;
+    if (deductError) {
+      console.error('Failed to deduct credits:', deductError);
+      // Continue - video was generated successfully even if credit deduction fails
+    } else if (deductResult === true) {
+      console.log(`Successfully deducted 1 credit for user ${userId}, generation ${generationId}`);
+    } else {
+      console.error('Credit deduction returned false - user may have insufficient credits');
     }
 
-    // Update generation record with result and link credit transaction
+    // Update generation record with result
     const { error: updateError } = await serviceClient
       .from('video_generations')
       .update({
@@ -337,25 +341,6 @@ async function generateVideoAsync(
     if (updateError) {
       console.error('Failed to update generation:', updateError);
       throw updateError;
-    }
-
-    // Deduct 1 credit for successful video generation
-    const { data: deductResult, error: deductError } = await serviceClient
-      .rpc('deduct_credits', {
-        p_user_id: userId,
-        p_amount: 1,
-        p_description: `Video generation: ${prompt.substring(0, 50)}...`,
-        p_reference_type: 'video_generation',
-        p_reference_id: generationId
-      });
-
-    if (deductError) {
-      console.error('Failed to deduct credits:', deductError);
-      // Continue - video was generated successfully even if credit deduction fails
-    } else if (deductResult === true) {
-      console.log(`Successfully deducted 1 credit for user ${userId}, generation ${generationId}`);
-    } else {
-      console.error('Credit deduction returned false - user may have insufficient credits');
     }
 
     // Track API usage
