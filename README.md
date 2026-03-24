@@ -2,6 +2,63 @@
 
 A production-ready SaaS platform for AI-powered video generation with subscription billing, credit system, and comprehensive admin controls.
 
+## Cloning for Multiple Projects
+
+Keep one clean copy as your **base template**, then clone it for each new project you want to test or build.
+
+### First Time — Set Up Your Base Copy
+
+```bash
+git clone https://github.com/digisurfsome/Style-Set.git Style-Set-base
+```
+
+This is your untouched reference. Don't develop in this folder.
+
+### Create a New Project Copy
+
+Every time you want a fresh instance to experiment with:
+
+```bash
+# Copy the base into a new project folder
+cp -r Style-Set-base my-new-project
+
+# Go into it and start fresh
+cd my-new-project
+
+# Remove the existing git history (start clean)
+rm -rf .git
+
+# Initialize a new repo if you want version control
+git init
+git add -A
+git commit -m "Initial commit from Style-Set template"
+
+# Install dependencies
+npm install
+
+# Create your env file and fill in credentials
+cp .env.example .env.local
+```
+
+### Quick Copy Cheatsheet
+
+```bash
+# Copy 1 — e.g. testing video features
+cp -r Style-Set-base video-test && cd video-test && rm -rf .git && npm install
+
+# Copy 2 — e.g. testing auth flows
+cp -r Style-Set-base auth-test && cd auth-test && rm -rf .git && npm install
+
+# Copy 3 — e.g. your real production app
+cp -r Style-Set-base my-saas-app && cd my-saas-app && rm -rf .git && npm install
+```
+
+Each copy gets its own `.env.local` with its own Supabase project, so they're completely independent.
+
+> **Tip:** Each project copy should use a **separate Supabase project** so the databases don't conflict. You can reuse the same fal.ai API key across copies.
+
+---
+
 ## Features
 
 - **AI Video Generation** — Generate videos using fal.ai models (Minimax, Wan T2V, image-to-video)
