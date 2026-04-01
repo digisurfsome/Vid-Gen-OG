@@ -1,0 +1,206 @@
+# IDEA CODE: App Idea Generator
+
+
+## How To Use
+
+
+1. Copy the prompt below
+2. Paste it into ChatGPT, Claude, or Gemini
+3. Describe your app idea (can be rough/vague - that's fine!)
+4. Copy the structured output into **Sections 1 & 2** of the main Idea Code template
+
+
+---
+
+
+# THE PROMPT (Copy Everything Below This Line)
+
+
+---
+
+
+**Role:** You are a product strategist and startup advisor who helps people turn vague app ideas into clear, buildable MVPs.
+
+
+**Objective:** I'm going to describe an app idea. It might be rough, incomplete, or just a general concept. Your job is to help me clarify it and output a structured specification I can use to build it.
+
+
+**Your Process:**
+1. If my idea is unclear, ask me 2-3 quick clarifying questions first
+2. Once you understand, output the structured format below
+3. Keep it MVP-focused - only essential features, nothing fancy
+
+
+**Output Format (Follow Exactly):**
+
+
+```
+## SECTION 1: APP IDENTITY
+
+
+**App Name:** [Suggest a short, memorable name]
+
+
+**One-Line Description:** [What it does in one sentence - be specific]
+
+
+**Target User:** [Who is this for? Be specific about their situation]
+
+
+**Core Problem It Solves:** [What pain point does this eliminate?]
+
+
+---
+
+
+## SECTION 2: FEATURES
+
+
+**Core Features (3-5 max):**
+1. [Feature 1 - specific and actionable]
+2. [Feature 2]
+3. [Feature 3]
+4. [Feature 4 - if needed]
+5. [Feature 5 - if needed]
+
+
+**What Users Can Do:**
+- [Main action 1 - e.g., "Create and save recipes"]
+- [Main action 2 - e.g., "Organize recipes into collections"]  
+- [Main action 3 - e.g., "Search their saved recipes"]
+```
+
+
+**Rules:**
+- Maximum 5 features - this is an MVP
+- Each feature should be one clear thing, not multiple things bundled
+- "What Users Can Do" should be plain English actions, not technical jargon
+- Don't include features like "user authentication" or "responsive design" - those are assumed
+- Focus on what makes this app unique and useful
+
+
+---
+
+
+# MY APP IDEA:
+
+
+[Describe your idea here - can be as rough as "an app for tracking workouts" or as detailed as you want]
+
+
+---
+
+
+# EXAMPLES
+
+
+**Example Input:**
+"I want an app where I can paste a recipe URL and it saves just the recipe without all the blog nonsense"
+
+
+**Example Output:**
+
+
+## SECTION 1: APP IDENTITY
+
+
+**App Name:** CleanRecipe
+
+
+**One-Line Description:** Paste any recipe URL and get just the ingredients and steps - no life stories, no ads, no popups.
+
+
+**Target User:** Home cooks who are frustrated by recipe blogs that bury the actual recipe under paragraphs of unnecessary content.
+
+
+**Core Problem It Solves:** Recipe websites are bloated with ads, stories, and popups. Users just want the ingredients and steps in a clean format they can actually use while cooking.
+
+
+---
+
+
+## SECTION 2: FEATURES
+
+
+**Core Features (3-5 max):**
+1. Paste a URL and automatically extract the recipe (ingredients + steps only)
+2. Save extracted recipes to a personal collection
+3. Scale recipe servings up or down with auto-calculated ingredients
+4. Search saved recipes by ingredient or name
+
+
+**What Users Can Do:**
+- Paste a recipe URL and instantly see the clean version
+- Save recipes to their personal cookbook
+- Adjust serving sizes and see updated measurements
+- Find saved recipes by searching ingredients they have
+
+
+---
+
+
+**Example Input:**
+"something for freelancers to track time and invoices"
+
+
+**Example Output:**
+
+
+## SECTION 1: APP IDENTITY
+
+
+**App Name:** FreelanceFlow
+
+
+**One-Line Description:** Track time on client projects and generate professional invoices in one click.
+
+
+**Target User:** Freelancers and solo consultants who bill hourly and need a simple way to track time and get paid.
+
+
+**Core Problem It Solves:** Freelancers waste time switching between time tracking apps and invoice tools, often forgetting to log hours or creating invoices manually from scattered notes.
+
+
+---
+
+
+## SECTION 2: FEATURES
+
+
+**Core Features (3-5 max):**
+1. One-click timer to track time on any project
+2. Organize time entries by client and project
+3. Generate invoices from tracked time with one click
+4. Dashboard showing unbilled hours and pending payments
+
+
+**What Users Can Do:**
+- Start/stop a timer when working on client projects
+- See all time logged for each client
+- Create a professional invoice from their tracked hours
+- View how much money is outstanding across all clients
+
+
+---
+
+
+# TIPS FOR DESCRIBING YOUR IDEA
+
+
+**Good inputs:**
+- "An app for meal planning that suggests recipes based on what's in my fridge"
+- "I want to track my guitar practice and see streaks"
+- "A tool for teachers to create and share worksheets"
+- "Something that helps me remember to water my plants"
+
+
+**Too vague (I'll ask clarifying questions):**
+- "A productivity app"
+- "Something with AI"
+- "An app for businesses"
+
+
+**Too complex (I'll help you simplify to MVP):**
+- "A full social network with marketplace, messaging, stories, live streaming, and AI recommendations"
+
+
